@@ -62,8 +62,8 @@
       --text-secondary: rgba(255, 255, 255, 0.6);
       --text-muted: rgba(255, 255, 255, 0.3);
       --border-color: rgba(74, 158, 255, 0.15);
-      --grid-line: rgba(74, 158, 255, 0.08);
-      --grid-line-major: rgba(74, 158, 255, 0.15);
+      --grid-line: rgba(255, 255, 255, 0.015);
+      --grid-line-major: rgba(255, 255, 255, 0.03);
       --particle-opacity: 0.4;
       --loader-bg: #0a0a0f;
     }
@@ -77,8 +77,8 @@
       --text-secondary: rgba(15, 23, 42, 0.6);
       --text-muted: rgba(15, 23, 42, 0.3);
       --border-color: rgba(74, 158, 255, 0.2);
-      --grid-line: rgba(74, 158, 255, 0.12);
-      --grid-line-major: rgba(74, 158, 255, 0.2);
+      --grid-line: rgba(0, 0, 0, 0.02);
+      --grid-line-major: rgba(0, 0, 0, 0.04);
       --particle-opacity: 0.3;
       --loader-bg: #ffffff;
     }
@@ -123,9 +123,10 @@
 
     .cursor.hover {
       background: transparent;
-      border: 1px solid #d4af37;
-      opacity: 1;
-      transform: translate(0, 0);
+      border: 1px solid var(--bp-blue);
+      opacity: 0.5;
+      width: 24px !important;
+      height: 24px !important;
       transition: all 0.15s ease;
       box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
     }
@@ -371,12 +372,12 @@
       pointer-events: none;
       z-index: 2;
       background: radial-gradient(
-        ellipse 130% 110% at 50% 50%,
+        ellipse 100% 100% at 50% 50%,
         transparent 0%,
-        transparent 30%,
-        rgba(10, 15, 28, 0.6) 55%,
-        rgba(10, 15, 28, 0.9) 75%,
-        rgba(10, 15, 28, 1) 100%
+        transparent 20%,
+        rgba(10, 10, 15, 0.7) 45%,
+        rgba(10, 10, 15, 0.95) 70%,
+        rgba(10, 10, 15, 1) 100%
       );
     }
 
@@ -389,11 +390,11 @@
 
     .light-mode .gradient-overlay {
       background: radial-gradient(
-        ellipse 130% 110% at 50% 50%,
+        ellipse 100% 100% at 50% 50%,
         transparent 0%,
-        transparent 30%,
-        rgba(255, 255, 255, 0.6) 55%,
-        rgba(255, 255, 255, 0.9) 75%,
+        transparent 20%,
+        rgba(255, 255, 255, 0.7) 45%,
+        rgba(255, 255, 255, 0.95) 70%,
         rgba(255, 255, 255, 1) 100%
       );
     }
@@ -467,7 +468,7 @@
       left: 0;
       right: 0;
       z-index: 100;
-      padding: 40px 48px;
+      padding: 50px 80px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -482,15 +483,15 @@
     .logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       text-decoration: none;
       color: var(--text-primary);
       transition: color 0.3s ease;
     }
 
     .logo svg {
-      width: 32px;
-      height: 30px;
+      width: 42px;
+      height: 40px;
     }
 
     .logo svg path:first-child {
@@ -508,7 +509,7 @@
 
     .logo-text {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 600;
       letter-spacing: -0.02em;
     }
@@ -540,104 +541,100 @@
       gap: 24px;
     }
 
-    /* Theme Toggle - Clear & Simple */
+    /* Theme Toggle - Minimal */
     .theme-toggle {
-      width: 72px;
+      width: 36px;
       height: 36px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: transparent;
+      border: 1px solid var(--border-color);
       cursor: pointer;
       position: relative;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 8px;
+      justify-content: center;
+      padding: 0;
     }
 
-    .theme-toggle::before {
-      content: '';
-      position: absolute;
-      width: 28px;
-      height: 28px;
-      background: var(--bp-blue);
-      top: 2px;
-      left: 2px;
-      transition: transform 0.3s ease, background 0.3s ease;
-      z-index: 1;
-    }
-
-    .light-mode .theme-toggle {
-      background: rgba(0, 0, 0, 0.05);
+    .theme-toggle:hover {
       border-color: var(--bp-blue);
     }
 
-    .light-mode .theme-toggle::before {
-      transform: translateX(36px);
-      background: var(--bp-blue);
+    .light-mode .theme-toggle {
+      background: transparent;
+      border-color: var(--border-color);
+    }
+
+    .light-mode .theme-toggle:hover {
+      border-color: var(--bp-blue);
     }
 
     .theme-toggle-icon {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       transition: opacity 0.3s ease, color 0.3s ease;
-      position: relative;
-      z-index: 2;
+      position: absolute;
     }
 
-    /* Dark mode: moon is white (active), sun is dimmed */
+    /* Dark mode: show moon, hide sun */
     .theme-toggle-icon.moon {
-      color: white;
+      color: var(--text-secondary);
+      opacity: 1;
     }
 
     .theme-toggle-icon.sun {
-      color: rgba(255, 255, 255, 0.4);
+      opacity: 0;
     }
 
-    /* Light mode: sun is white (active), moon is dimmed */
+    /* Light mode: show sun, hide moon */
     .light-mode .theme-toggle-icon.moon {
-      color: rgba(0, 0, 0, 0.3);
+      opacity: 0;
     }
 
     .light-mode .theme-toggle-icon.sun {
-      color: white;
+      color: var(--text-secondary);
+      opacity: 1;
+    }
+    
+    .theme-toggle:hover .theme-toggle-icon {
+      color: var(--bp-blue);
     }
 
     .nav-cta {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--bg-primary);
-      background: var(--text-primary);
-      padding: 14px 28px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-primary);
+      background: transparent;
+      padding: 0;
       text-decoration: none;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       position: relative;
-      overflow: hidden;
-      transition: all 0.4s ease;
+      transition: all 0.3s ease;
     }
 
     .nav-cta span {
       position: relative;
-      z-index: 2;
     }
 
-    .nav-cta::before {
+    .nav-cta::after {
       content: '';
       position: absolute;
-      inset: 0;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
       background: var(--bp-blue);
-      transform: translateY(100%);
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: width 0.3s ease;
     }
 
-    .nav-cta:hover::before {
-      transform: translateY(0);
+    .nav-cta:hover::after {
+      width: 100%;
     }
 
     .nav-cta:hover {
-      color: white;
+      color: var(--bp-blue);
     }
 
     .nav-progress {
@@ -1084,23 +1081,23 @@
     }
 
     .bp-ruler.top, .bp-ruler.bottom {
-      left: 40px;
-      right: 40px;
+      left: 24px;
+      right: 24px;
       justify-content: space-between;
     }
 
-    .bp-ruler.top { top: 5px; }
-    .bp-ruler.bottom { bottom: 5px; }
+    .bp-ruler.top { top: 4px; }
+    .bp-ruler.bottom { bottom: 4px; }
 
     .bp-ruler.left, .bp-ruler.right {
       flex-direction: column;
-      top: 40px;
-      bottom: 40px;
+      top: 24px;
+      bottom: 24px;
       justify-content: space-between;
     }
 
-    .bp-ruler.left { left: 5px; }
-    .bp-ruler.right { right: 5px; }
+    .bp-ruler.left { left: 4px; }
+    .bp-ruler.right { right: 4px; }
 
     /* Main Content Area V2 - Vertical Layout */
     .bp-content-v2 {
@@ -1361,38 +1358,35 @@
 
     .strat-title {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(28px, 4vw, 48px);
+      font-size: clamp(42px, 5.5vw, 80px);
       font-weight: 400;
-      line-height: 1.3;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-primary);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
       margin-bottom: 32px;
       text-align: center;
     }
 
     .strat-title .line1 {
       display: block;
-      color: var(--text-secondary);
-      font-size: 0.9em;
-      font-weight: 400;
-      letter-spacing: 0.15em;
+      color: var(--text-primary);
+      font-weight: 300;
     }
 
     .strat-title .line2 {
       display: block;
-      color: var(--text-primary);
-      font-size: 0.9em;
+      color: var(--bp-blue);
+      font-size: 0.65em;
       margin-top: 4px;
       font-weight: 400;
-      letter-spacing: 0.15em;
     }
     
     .hero-premium-desc {
-      font-size: 16px;
-      line-height: 1.7;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.8;
       color: var(--text-secondary);
-      max-width: 580px;
+      max-width: 520px;
       margin: 0 auto 40px auto;
       text-align: center;
     }
@@ -1409,31 +1403,55 @@
       opacity: 1;
       animation: none;
       background: transparent;
-      color: var(--bp-blue);
-      padding: 0;
-      font-size: 16px;
-      gap: 14px;
+      color: #4A9EFF;
+      padding: 12px 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+      gap: 12px;
+      transition: opacity 0.3s ease;
+      position: relative;
+    }
+    
+    .premium-cta-group .hero-cta::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #4A9EFF;
+      transition: width 0.4s ease;
     }
     
     .premium-cta-group .hero-cta:hover {
       background: transparent;
+      letter-spacing: 0;
+      box-shadow: none;
     }
     
-    .premium-cta-group .hero-cta .scramble {
-      color: var(--bp-blue);
-      display: inline-block;
+    .premium-cta-group .hero-cta:hover::after {
+      width: 100%;
+    }
+    
+    .premium-cta-group .hero-cta span {
+      color: #4A9EFF;
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 16px;
+      font-size: 14px;
+      font-weight: 500;
     }
     
     .premium-cta-group .hero-cta svg {
-      width: 22px;
-      height: 22px;
+      width: 16px;
+      height: 16px;
+      color: #4A9EFF;
+      transition: transform 0.3s ease;
     }
     
-    .premium-cta-group .hero-cta .scramble .glitch-char {
-      display: inline-block;
-      transition: color 0.2s ease, transform 0.2s ease;
+    .premium-cta-group .hero-cta:hover svg {
+      transform: translateX(4px);
     }
 
     @media (max-width: 1200px) {
@@ -1447,7 +1465,7 @@
         padding: 80px 20px;
       }
       .strat-title {
-        font-size: clamp(32px, 8vw, 48px);
+        font-size: clamp(28px, 7vw, 40px);
       }
       .hero-premium-desc {
         font-size: 14px;
@@ -2214,24 +2232,26 @@
 
     .features-hero-title {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(36px, 5vw, 56px);
-      font-weight: 700;
-      line-height: 1.1;
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
       color: var(--text-primary);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .features-hero-title span {
       color: var(--bp-blue);
-      font-style: italic;
+      font-weight: 400;
     }
 
     .features-hero-subtitle {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 16px;
+      font-size: 14px;
+      font-weight: 400;
       color: var(--text-secondary);
-      line-height: 1.7;
-      max-width: 550px;
+      line-height: 1.8;
+      max-width: 520px;
       margin: 0 auto;
     }
 
@@ -2259,7 +2279,7 @@
 
     .accordion-chart {
       width: 100%;
-      max-width: 480px;
+      max-width: 560px;
       height: auto;
       filter: brightness(0) saturate(100%) invert(52%) sepia(98%) saturate(1217%) hue-rotate(194deg) brightness(102%) contrast(101%);
       opacity: 1;
@@ -2278,7 +2298,7 @@
 
     /* Accordion Cards - Premium Design */
     .accordion-card {
-      background: var(--bg-card);
+      background: transparent;
       border: 1px solid var(--border-color);
       overflow: hidden;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2288,14 +2308,14 @@
     }
 
     .accordion-card:hover {
-      border-color: rgba(74, 158, 255, 0.5);
-      background: rgba(74, 158, 255, 0.03);
+      border-color: rgba(74, 158, 255, 0.4);
+      background: rgba(74, 158, 255, 0.02);
     }
 
     .accordion-card.active {
       border-color: var(--bp-blue);
-      box-shadow: 0 8px 32px rgba(74, 158, 255, 0.2);
-      background: rgba(74, 158, 255, 0.05);
+      box-shadow: 0 4px 20px rgba(74, 158, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .accordion-header {
@@ -2343,8 +2363,8 @@
 
     .accordion-title {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 500;
       color: var(--text-primary);
       flex: 1;
       margin: 0;
@@ -2401,11 +2421,11 @@
 
     /* Light mode accordion */
     .light-mode .accordion-card.active {
-      background: rgba(74, 158, 255, 0.08);
+      background: rgba(255, 255, 255, 0.95);
     }
 
     .light-mode .accordion-card:hover {
-      background: rgba(74, 158, 255, 0.05);
+      background: rgba(255, 255, 255, 0.5);
     }
 
     /* Responsive */
@@ -2716,35 +2736,6 @@
       overflow: hidden;
     }
 
-    /* Circular blur background for focus */
-    .cta-blur {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(
-        circle at center,
-        rgba(74, 158, 255, 0.15) 0%,
-        rgba(74, 158, 255, 0.08) 30%,
-        rgba(74, 158, 255, 0.02) 60%,
-        transparent 70%
-      );
-      filter: blur(60px);
-      pointer-events: none;
-    }
-
-    .light-mode .cta-blur {
-      background: radial-gradient(
-        circle at center,
-        rgba(74, 158, 255, 0.2) 0%,
-        rgba(74, 158, 255, 0.1) 30%,
-        rgba(74, 158, 255, 0.03) 60%,
-        transparent 70%
-      );
-    }
-
     .cta-content {
       position: relative;
       z-index: 10;
@@ -2759,12 +2750,13 @@
     }
 
     .cta-eyebrow {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
-      color: var(--bp-blue);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
       text-transform: uppercase;
-      letter-spacing: 0.4em;
-      margin-bottom: 30px;
+      letter-spacing: 0.2em;
+      margin-bottom: 24px;
       opacity: 0;
       animation: fadeInUp 1s ease forwards 0.2s;
     }
@@ -2778,8 +2770,8 @@
     .mini-footer {
       position: absolute;
       bottom: 40px;
-      left: 48px;
-      right: 48px;
+      left: 80px;
+      right: 80px;
       padding: 24px 0;
       display: flex;
       justify-content: space-between;
@@ -2790,13 +2782,13 @@
     .mini-footer-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 24px;
     }
 
     .mini-footer-brand {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 600;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
       color: var(--text-primary);
     }
 
@@ -2809,62 +2801,53 @@
     }
 
     .mini-footer-copy {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
       color: var(--text-muted);
     }
 
     .mini-footer-socials {
       display: flex;
-      gap: 20px;
+      gap: 32px;
     }
 
     .mini-footer-socials a {
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--border-color);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 400;
       color: var(--text-secondary);
-      transition: all 0.3s ease;
+      text-decoration: none;
+      transition: color 0.3s ease;
     }
 
     .mini-footer-socials a:hover {
-      border-color: var(--bp-blue);
       color: var(--bp-blue);
-      transform: translateY(-2px);
-    }
-
-    .mini-footer-socials svg {
-      width: 16px;
-      height: 16px;
     }
 
     .cta-title {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(48px, 10vw, 120px);
-      font-weight: 700;
-      line-height: 1;
+      font-size: clamp(36px, 4.5vw, 64px);
+      font-weight: 300;
+      line-height: 1.15;
       margin-bottom: 24px;
       position: relative;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.02em;
     }
 
     .cta-title-main {
-      display: block;
+      display: inline;
       color: var(--text-primary);
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(20px);
       animation: ctaReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
     }
 
     .cta-title-accent {
-      display: block;
+      display: inline;
       color: var(--bp-blue);
       position: relative;
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(20px);
       animation: ctaReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
     }
 
@@ -2875,46 +2858,16 @@
       }
     }
 
-    .cta-title-accent::before {
-      content: '';
-      position: absolute;
-      left: -8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 0;
-      background: var(--bp-blue);
-      animation: lineGrow 0.4s ease forwards 0.9s;
-    }
-
-    @keyframes lineGrow {
-      to { height: 80%; }
-    }
-
-    .cta-title-accent::after {
-      content: '_';
-      color: var(--bp-blue);
-      opacity: 0;
-      animation: cursorBlink 0.8s step-end infinite 1s;
-    }
-
-    @keyframes cursorBlink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
     .cta-subtitle {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 16px;
+      font-size: 14px;
+      font-weight: 400;
       color: var(--text-secondary);
       margin-bottom: 40px;
-      max-width: 450px;
-      line-height: 1.7;
+      max-width: 480px;
+      line-height: 1.8;
       opacity: 0;
       animation: fadeInUp 1s ease forwards 0.6s;
-      opacity: 0;
-      animation: fadeUp 0.8s ease forwards;
-      animation-delay: 2s;
     }
 
     .cta-buttons {
@@ -2928,44 +2881,37 @@
     .cta-btn {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 16px 32px;
-      background: var(--bp-blue);
+      gap: 12px;
+      padding: 12px 0;
+      background: transparent;
       border: none;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 600;
-      color: white;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: #4A9EFF;
       text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
       position: relative;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow: hidden;
+      transition: opacity 0.3s ease;
     }
 
-    .cta-btn::before {
+    .cta-btn::after {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
-      transform: translateX(-100%);
-      transition: transform 0.6s ease;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #4A9EFF;
+      transition: width 0.4s ease;
     }
 
-    .cta-btn:hover::before {
-      transform: translateX(100%);
-    }
-
-    .cta-btn:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(74, 158, 255, 0.4);
+    .cta-btn:hover::after {
+      width: 100%;
     }
 
     .cta-btn svg {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       transition: transform 0.3s ease;
     }
 
@@ -2973,22 +2919,10 @@
       transform: translateX(4px);
     }
 
-    .cta-btn-secondary {
-      background: transparent;
-      border: 2px solid var(--border-color);
-      color: var(--text-primary);
-    }
-
-    .cta-btn-secondary:hover {
-      border-color: var(--bp-blue);
-      color: var(--bp-blue);
-      box-shadow: 0 20px 40px rgba(74, 158, 255, 0.15);
-    }
-
     .cta-stats {
       display: flex;
-      gap: 48px;
-      margin-top: 60px;
+      gap: 56px;
+      margin-top: 48px;
       opacity: 0;
       animation: fadeInUp 1s ease forwards 1s;
     }
@@ -2998,19 +2932,18 @@
     }
 
     .cta-stat-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 24px;
-      font-weight: 700;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
       color: var(--text-primary);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .cta-stat-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
       color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
     }
 
     /* Corner decorations */
@@ -3030,41 +2963,41 @@
     }
 
     .corner-decoration.top-left {
-      top: 24px;
-      left: 24px;
+      top: 8px;
+      left: 8px;
     }
 
     .corner-decoration.top-left::before {
       top: 0;
       left: 0;
-      width: 50px;
-      height: 2px;
+      width: 32px;
+      height: 1px;
     }
 
     .corner-decoration.top-left::after {
       top: 0;
       left: 0;
-      width: 2px;
-      height: 50px;
+      width: 1px;
+      height: 32px;
     }
 
     .corner-decoration.bottom-right {
-      bottom: 24px;
-      right: 24px;
+      bottom: 8px;
+      right: 8px;
     }
 
     .corner-decoration.bottom-right::before {
       bottom: 0;
       right: 0;
-      width: 50px;
-      height: 2px;
+      width: 32px;
+      height: 1px;
     }
 
     .corner-decoration.bottom-right::after {
       bottom: 0;
       right: 0;
-      width: 2px;
-      height: 50px;
+      width: 1px;
+      height: 32px;
     }
 
     /* Magnetic effect */
@@ -3182,19 +3115,20 @@
     /* Back to top button */
     .back-to-top {
       position: fixed;
-      bottom: 160px;
-      right: 48px;
-      width: 50px;
-      height: 50px;
-      background: var(--bp-blue);
+      bottom: 120px;
+      right: 80px;
+      background: transparent;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--text-secondary);
       opacity: 0;
       visibility: hidden;
-      transition: all 0.4s ease;
+      transition: all 0.3s ease;
       z-index: 90;
     }
 
@@ -3204,14 +3138,12 @@
     }
 
     .back-to-top:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(74, 158, 255, 0.4);
+      color: var(--bp-blue);
     }
 
     .back-to-top svg {
-      width: 20px;
-      height: 20px;
-      color: white;
+      width: 14px;
+      height: 14px;
     }
 
     @media (max-width: 1024px) {
@@ -3229,7 +3161,7 @@
     @media (max-width: 768px) {
       body { cursor: auto; }
       .cursor, .cursor-dot { display: none; }
-      .nav { padding: 16px 20px; }
+      .nav { padding: 20px 24px; }
       .hero-decoration { display: none; }
       .features-container { grid-template-columns: 1fr; gap: 60px; }
       .features-grid { grid-template-columns: 1fr; }
@@ -3320,12 +3252,12 @@
     </div>
     <div class="nav-right">
       <button class="theme-toggle magnetic" id="themeToggle" aria-label="Toggle theme">
-        <svg class="theme-toggle-icon moon" viewBox="0 0 24 24" fill="currentColor">
+        <svg class="theme-toggle-icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
         </svg>
-        <svg class="theme-toggle-icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="5"/>
-          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        <svg class="theme-toggle-icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
         </svg>
       </button>
       <a href="#" class="nav-cta magnetic"><span>Request Access</span></a>
@@ -3395,22 +3327,14 @@
           </p>
           <div class="premium-cta-group">
             <a href="#" class="hero-cta magnetic">
-              <span class="scramble" data-text="Explore Platform">Explore Platform</span>
+              <span>Explore Platform</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
-          </div>
-          
-          <div class="scroll-indicator" id="scrollIndicator">
-            <span class="scroll-text">Page Down</span>
-            <div class="scroll-chevron-container">
-              <div class="scroll-chevron"></div>
-              <div class="scroll-chevron"></div>
-              <div class="scroll-chevron"></div>
-            </div>
-          </div>
         </div>
+
+      </div>
 
       </div>
     </section>
@@ -3573,14 +3497,10 @@
 
     <!-- Panel 4: CTA -->
     <section class="panel cta-panel">
-      <!-- Circular blur for focus -->
-      <div class="cta-blur"></div>
-
       <div class="cta-content">
         <div class="cta-eyebrow">Why It Matters</div>
         <h2 class="cta-title">
-          <span class="cta-title-main">Stop Flying</span>
-          <span class="cta-title-accent">Blind</span>
+          <span class="cta-title-main">Stop Flying </span><span class="cta-title-accent">Blind</span>
         </h2>
         <p class="cta-subtitle">Replace dashboards with decision-grade signals. Allocate incentives where they actually improve markets. Maintain healthy depth without overpaying for liquidity.</p>
         
@@ -3616,16 +3536,8 @@
           <span class="mini-footer-copy">© 2026</span>
         </div>
         <div class="mini-footer-socials">
-          <a href="https://x.com/transparentspc" aria-label="X (Twitter)" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
-          </a>
-          <a href="https://t.me/pdotal" aria-label="Telegram" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-            </svg>
-          </a>
+          <a href="https://x.com/transparentspc" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+          <a href="https://t.me/pdotal" target="_blank" rel="noopener noreferrer">Telegram</a>
         </div>
       </div>
     </section>
@@ -3634,9 +3546,10 @@
 
   <!-- Back to top button -->
   <button class="back-to-top" id="backToTop" aria-label="Back to top">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M12 19V5M5 12l7-7 7 7"/>
     </svg>
+    <span>Back to top</span>
   </button>
 
   <script>
@@ -3692,32 +3605,14 @@
         currentHoverEl = el;
         isHovering = true;
         cursor.classList.add('hover');
-        const rect = el.getBoundingClientRect();
-        cursor.style.width = rect.width + 'px';
-        cursor.style.height = rect.height + 'px';
-        cursor.style.left = rect.left + 'px';
-        cursor.style.top = rect.top + 'px';
       });
       el.addEventListener('mouseleave', () => {
         currentHoverEl = null;
         isHovering = false;
         cursor.classList.remove('hover');
-        cursor.style.width = '12px';
-        cursor.style.height = '12px';
-        // Reset cursor position to follow mouse again
-        currentGridX = targetGridX;
-        currentGridY = targetGridY;
       });
     });
     
-    // Update cursor position on scroll when hovering
-    window.addEventListener('scroll', () => {
-      if (currentHoverEl && isHovering) {
-        const rect = currentHoverEl.getBoundingClientRect();
-        cursor.style.left = rect.left + 'px';
-        cursor.style.top = rect.top + 'px';
-      }
-    }, { passive: true });
 
     function animateCursor() {
       // Only animate when NOT hovering on an element
@@ -3767,7 +3662,11 @@
     const backToTop = document.getElementById('backToTop');
 
     function scrollToPanel(index) {
-      if (index < 0 || index >= panels.length || isScrolling) return;
+      // Clamp index to valid range
+      if (index < 0) index = 0;
+      if (index >= panels.length) index = panels.length - 1;
+      if (index === currentPanel) return;
+      
       isScrolling = true;
       currentPanel = index;
       
@@ -3802,25 +3701,21 @@
         document.body.classList.remove('panel-dashboard');
       }
 
-      // Hide scroll indicator - only show on first panel (hero)
-      const scrollIndicator = document.getElementById('scrollIndicator');
-      
+      // Back to top button visibility
       if (index === 0) {
-        scrollIndicator.classList.remove('hidden');
         backToTop.classList.remove('visible');
-      } else {
-        scrollIndicator.classList.add('hidden');
-        if (index === 4) {
+      } else if (index === 3) {
           backToTop.classList.add('visible');
         } else {
           backToTop.classList.remove('visible');
-        }
       }
 
       // Features title animation on panel 1 (Features)
       if (index === 1) {
         const featuresTitle = document.getElementById('featuresTitle');
-        setTimeout(() => featuresTitle.classList.add('visible'), 200);
+        if (featuresTitle) {
+          setTimeout(() => featuresTitle.classList.add('visible'), 200);
+        }
       }
 
       if (index === 3) {
@@ -3840,53 +3735,66 @@
       scrollToPanel(0);
     });
 
-    let wheelTimeout;
-    window.addEventListener('wheel', (e) => {
-      // Allow normal scrolling when in vertical section
-      if (inVerticalSection && window.scrollY > 50) {
-        return;
-      }
-      
+    let canScroll = true;
+    
+    document.addEventListener('wheel', (e) => {
       e.preventDefault();
-      clearTimeout(wheelTimeout);
-      wheelTimeout = setTimeout(() => {
-        if (e.deltaY > 30) {
-          if (currentPanel === panels.length - 1 && !inVerticalSection) {
-            scrollToPanel(panels.length); // Trigger vertical section
-          } else {
+      
+      if (!canScroll) return;
+      
+      if (Math.abs(e.deltaY) > 15) {
+        canScroll = false;
+        
+        if (e.deltaY > 0) {
             scrollToPanel(currentPanel + 1);
-          }
-        } else if (e.deltaY < -30) {
-          if (inVerticalSection && window.scrollY <= 50) {
-            scrollToPanel(currentPanel);
-          } else if (!inVerticalSection) {
+        } else {
             scrollToPanel(currentPanel - 1);
           }
+        
+        // Allow scrolling again after animation
+        setTimeout(() => { canScroll = true; }, 700);
         }
-      }, 50);
-    }, { passive: false });
+    }, { passive: false, capture: true });
 
     // Touch support
-    let touchStartX = 0;
+    let touchStartY = 0;
     window.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
     });
 
     window.addEventListener('touchend', (e) => {
-      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (!canScroll) return;
+      const diff = touchStartY - e.changedTouches[0].clientY;
       if (Math.abs(diff) > 50) {
+        canScroll = false;
         if (diff > 0) scrollToPanel(currentPanel + 1);
         else scrollToPanel(currentPanel - 1);
+        setTimeout(() => { canScroll = true; }, 700);
       }
     });
 
     progressDots.forEach((dot, i) => {
-      dot.addEventListener('click', () => scrollToPanel(i));
+      dot.addEventListener('click', () => {
+        if (canScroll) {
+          canScroll = false;
+          scrollToPanel(i);
+          setTimeout(() => { canScroll = true; }, 700);
+        }
+      });
     });
 
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') scrollToPanel(currentPanel + 1);
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') scrollToPanel(currentPanel - 1);
+      if (!canScroll) return;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        canScroll = false;
+        scrollToPanel(currentPanel + 1);
+        setTimeout(() => { canScroll = true; }, 700);
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        canScroll = false;
+        scrollToPanel(currentPanel - 1);
+        setTimeout(() => { canScroll = true; }, 700);
+      }
     });
 
     // Living Grid - Simple grid squares that pop up from the 2D grid
