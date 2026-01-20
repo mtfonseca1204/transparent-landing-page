@@ -62,8 +62,8 @@
       --text-secondary: rgba(255, 255, 255, 0.6);
       --text-muted: rgba(255, 255, 255, 0.3);
       --border-color: rgba(74, 158, 255, 0.15);
-      --grid-line: rgba(74, 158, 255, 0.03);
-      --grid-line-major: rgba(74, 158, 255, 0.08);
+      --grid-line: rgba(74, 158, 255, 0.08);
+      --grid-line-major: rgba(74, 158, 255, 0.15);
       --particle-opacity: 0.4;
       --loader-bg: #0a0a0f;
     }
@@ -77,8 +77,8 @@
       --text-secondary: rgba(15, 23, 42, 0.6);
       --text-muted: rgba(15, 23, 42, 0.3);
       --border-color: rgba(74, 158, 255, 0.2);
-      --grid-line: rgba(74, 158, 255, 0.05);
-      --grid-line-major: rgba(74, 158, 255, 0.12);
+      --grid-line: rgba(74, 158, 255, 0.12);
+      --grid-line-major: rgba(74, 158, 255, 0.2);
       --particle-opacity: 0.3;
       --loader-bg: #ffffff;
     }
@@ -99,8 +99,8 @@
 
     /* Custom Cursor - Grid Square */
     .cursor {
-      width: 24px;
-      height: 24px;
+      width: 12px;
+      height: 12px;
       border: 1px solid var(--bp-blue);
       background: rgba(74, 158, 255, 0.05);
       position: fixed;
@@ -290,7 +290,7 @@
         linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
         linear-gradient(var(--grid-line-major) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-line-major) 1px, transparent 1px);
-      background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+      background-size: 12px 12px, 12px 12px, 60px 60px, 60px 60px;
     }
 
     /* Cursor Glow - lights up grid lines near cursor */
@@ -406,27 +406,58 @@
       z-index: 2;
     }
 
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: var(--bp-blue);
-      opacity: 0;
-      animation: particleDrift var(--drift-duration, 15s) linear infinite;
-      animation-delay: var(--drift-delay, 0s);
+    /* Living Grid - Grid squares that pop up */
+    .living-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
     }
-
-    @keyframes particleDrift {
+    
+    .grid-cell {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      pointer-events: none;
+      border: 1px solid var(--grid-line-major);
+      background: var(--bg-primary);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+      transform: translateY(0);
+      opacity: 0;
+    }
+    
+    .grid-cell.rising {
+      animation: cellPop var(--rise-duration, 2s) ease-out forwards;
+      animation-delay: var(--rise-delay, 0s);
+    }
+    
+    @keyframes cellPop {
       0% { 
+        transform: translateY(0);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
         opacity: 0;
-        transform: translateY(0) translateX(0);
       }
-      10% { opacity: 0.5; }
-      90% { opacity: 0.5; }
+      10% { 
+        opacity: 1;
+      }
+      40% { 
+        transform: translateY(var(--pop-height, -8px));
+        box-shadow: 0 var(--shadow-offset, 4px) var(--shadow-blur, 8px) rgba(0, 0, 0, 0.15);
+        opacity: 1;
+      }
+      70% {
+        opacity: 0.8;
+      }
       100% { 
+        transform: translateY(0);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
         opacity: 0;
-        transform: translateY(-100vh) translateX(50px);
       }
+    }
+    
+    .light-mode .grid-cell {
+      background: var(--bg-primary);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
     }
 
     /* Navigation */
@@ -1325,14 +1356,16 @@
         opacity: 1;
         transform: translateY(0);
       }
+
     }
 
     .strat-title {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(42px, 5.5vw, 80px);
-      font-weight: 500;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 400;
+      line-height: 1.3;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
       color: var(--text-primary);
       margin-bottom: 32px;
       text-align: center;
@@ -1340,15 +1373,19 @@
 
     .strat-title .line1 {
       display: block;
-      color: var(--text-primary);
+      color: var(--text-secondary);
       font-size: 0.9em;
+      font-weight: 400;
+      letter-spacing: 0.15em;
     }
 
     .strat-title .line2 {
       display: block;
-      color: var(--bp-blue);
-      font-size: 0.7em;
-      margin-top: 8px;
+      color: var(--text-primary);
+      font-size: 0.9em;
+      margin-top: 4px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
     }
     
     .hero-premium-desc {
@@ -3351,7 +3388,7 @@
           </div>
           <h1 class="strat-title">
             <span class="line1">Optimize</span>
-            <span class="line2">Incentives.</span>
+            <span class="line2">Incentives</span>
           </h1>
           <p class="hero-premium-desc">
             Understand which incentives actually move liquidity and which get extracted. Track LP behavior, concentration risk, and churn across your pools. Deploy capital where it improves depth and execution—not where it disappears.
@@ -3629,7 +3666,7 @@
     // Custom cursor - snaps to grid
     const cursor = document.getElementById('cursor');
     const cursorDot = document.getElementById('cursorDot');
-    const CURSOR_GRID = 24; // Grid cell size
+    const CURSOR_GRID = 12; // Grid cell size
     let mouseX = 0, mouseY = 0;
     let targetGridX = 0, targetGridY = 0;
     let currentGridX = 0, currentGridY = 0;
@@ -3665,8 +3702,8 @@
         currentHoverEl = null;
         isHovering = false;
         cursor.classList.remove('hover');
-        cursor.style.width = '24px';
-        cursor.style.height = '24px';
+        cursor.style.width = '12px';
+        cursor.style.height = '12px';
         // Reset cursor position to follow mouse again
         currentGridX = targetGridX;
         currentGridY = targetGridY;
@@ -3852,23 +3889,81 @@
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') scrollToPanel(currentPanel - 1);
     });
 
-    // Create floating particles
+    // Living Grid - Simple grid squares that pop up from the 2D grid
     const particlesContainer = document.getElementById('particles');
-    for (let i = 0; i < 25; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.top = (100 + Math.random() * 20) + '%';
-      particle.style.setProperty('--drift-duration', (12 + Math.random() * 10) + 's');
-      particle.style.setProperty('--drift-delay', Math.random() * 10 + 's');
-      particlesContainer.appendChild(particle);
+    particlesContainer.className = 'living-grid';
+    const GRID_CELL = 12;
+    
+    function createPoppingCell(x, y, popHeight, delay) {
+      const cell = document.createElement('div');
+      cell.className = 'grid-cell';
+      cell.style.left = x + 'px';
+      cell.style.top = y + 'px';
+      cell.style.setProperty('--pop-height', -popHeight + 'px');
+      cell.style.setProperty('--shadow-offset', Math.round(popHeight * 0.5) + 'px');
+      cell.style.setProperty('--shadow-blur', Math.round(popHeight * 0.8) + 'px');
+      cell.style.setProperty('--rise-delay', delay + 'ms');
+      cell.style.setProperty('--rise-duration', (1.5 + Math.random() * 0.8) + 's');
+      cell.classList.add('rising');
+      particlesContainer.appendChild(cell);
+      
+      setTimeout(() => cell.remove(), 3000 + delay);
     }
+    
+    // Create a wave ripple - cells pop outward from center
+    function createWaveEffect(centerX, centerY, radius) {
+      centerX = Math.floor(centerX / GRID_CELL) * GRID_CELL;
+      centerY = Math.floor(centerY / GRID_CELL) * GRID_CELL;
+      
+      for (let x = centerX - radius; x < centerX + radius; x += GRID_CELL) {
+        for (let y = centerY - radius; y < centerY + radius; y += GRID_CELL) {
+          const dist = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+          
+          if (dist < radius && Math.random() > 0.5) {
+            const heightFactor = 1 - (dist / radius);
+            const popHeight = 4 + heightFactor * 12; // 4px to 16px pop
+            const delay = dist * 4; // Wave delay
+            
+            createPoppingCell(x, y, popHeight, delay);
+          }
+        }
+      }
+    }
+    
+    // Random scattered pops
+    function createScatteredCells() {
+      const count = 6 + Math.floor(Math.random() * 8);
+      for (let i = 0; i < count; i++) {
+        const x = Math.floor(Math.random() * (window.innerWidth / GRID_CELL)) * GRID_CELL;
+        const y = Math.floor(Math.random() * (window.innerHeight / GRID_CELL)) * GRID_CELL;
+        const popHeight = 3 + Math.random() * 10;
+        const delay = Math.random() * 400;
+        createPoppingCell(x, y, popHeight, delay);
+      }
+    }
+    
+    // Periodic waves
+    function triggerWave() {
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      const radius = 70 + Math.random() * 90;
+      createWaveEffect(x, y, radius);
+    }
+    
+    // Start activity
+    setInterval(createScatteredCells, 500);
+    setInterval(triggerWave, 3500);
+    
+    // Initial wave from center
+    setTimeout(() => {
+      createWaveEffect(window.innerWidth / 2, window.innerHeight / 2, 120);
+    }, 800);
 
     // Cursor Grid Interaction - "alive" grid lines
     const cursorGlow = document.getElementById('cursorGlow');
     const gridHighlightH = document.getElementById('gridHighlightH');
     const gridHighlightV = document.getElementById('gridHighlightV');
-    const GRID_SIZE = 24; // Match the grid size from CSS
+    const GRID_SIZE = 12; // Match the grid size from CSS
     
     let isMouseInWindow = false;
     
