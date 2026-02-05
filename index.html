@@ -718,6 +718,58 @@
       width: 100%;
     }
 
+    /* Mobile Swipe Hint */
+    .swipe-hint {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      z-index: 100;
+      opacity: 0;
+      animation: swipeHintFade 3s ease-out 2s forwards;
+      pointer-events: none;
+    }
+    
+    .swipe-hint svg {
+      animation: swipeHintBounce 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes swipeHintFade {
+      0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      20% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    }
+    
+    @keyframes swipeHintBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+    
+    .swipe-hint.hidden {
+      display: none !important;
+    }
+    
+    @media (max-width: 768px) {
+      .swipe-hint {
+        display: flex;
+        bottom: 50px;
+        font-size: 10px;
+      }
+      .swipe-hint svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
     /* ============================================
        PANEL 1 - HERO
        ============================================ */
@@ -3158,23 +3210,749 @@
       }
     }
 
+    /* ============================================
+       MOBILE RESPONSIVE STYLES
+       Best practices: Touch-friendly, readable, fast
+       ============================================ */
+    
+    /* Tablet breakpoint */
+    @media (max-width: 1024px) {
+      .hero-data-stratification {
+        padding: 100px 40px 80px;
+      }
+      .features-accordion-container {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .accordion-center {
+        order: -1;
+        margin-bottom: 24px;
+      }
+    }
+    
+    /* Mobile breakpoint */
     @media (max-width: 768px) {
-      body { cursor: auto; }
-      .cursor, .cursor-dot { display: none; }
-      .nav { padding: 20px 24px; }
-      .hero-decoration { display: none; }
-      .features-container { grid-template-columns: 1fr; gap: 60px; }
-      .features-grid { grid-template-columns: 1fr; }
-      .stats-container { flex-direction: column; gap: 40px; }
-      .dashboard-grid { grid-template-columns: 1fr 1fr; }
-      .dashboard-chart { grid-column: span 2; }
-      .nav-left, .nav-right { gap: 16px; }
-      .logo-text { display: none; }
-      .scroll-indicator { display: none; }
-      .footer { padding: 60px 24px; }
-      .footer-top { grid-template-columns: 1fr; gap: 40px; }
-      .footer-brand { grid-column: span 1; }
-      .footer-bottom { flex-direction: column; gap: 24px; text-align: center; }
+      /* ===== BASE MOBILE SETTINGS ===== */
+      html {
+        /* Prevent text size adjustment on orientation change */
+        -webkit-text-size-adjust: 100%;
+        /* Fixed height to prevent address bar issues */
+        height: 100%;
+        overflow: hidden;
+      }
+      
+      body { 
+        cursor: auto;
+        /* Fixed dimensions */
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        /* Prevent all native touch behaviors */
+        touch-action: none;
+        /* Prevent pull-to-refresh and overscroll */
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: auto;
+        /* Remove any padding that might cause issues */
+        padding: 0;
+        margin: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      
+      /* Hide custom cursor on touch devices */
+      .cursor, .cursor-dot, .cursor-glow { 
+        display: none !important; 
+      }
+      
+      /* ===== FIX SCROLL CONTAINER ===== */
+      .horizontal-scroll {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200vw;
+        height: 200vh;
+        touch-action: none;
+      }
+      
+      .panel {
+        width: 100vw;
+        height: 100vh;
+        /* Use fixed height for iOS address bar */
+        height: 100dvh;
+        overflow: hidden;
+        touch-action: none;
+      }
+      
+      /* ===== NAVIGATION ===== */
+      .nav { 
+        padding: 16px 20px;
+        padding-top: calc(16px + env(safe-area-inset-top));
+        position: fixed;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      
+      .nav-left, .nav-right { 
+        gap: 12px; 
+      }
+      
+      .logo {
+        /* Larger touch target - min 44px */
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .logo svg { 
+        width: 32px; 
+        height: 30px; 
+      }
+      
+      .logo-text { 
+        display: none; 
+      }
+      
+      .nav-cta { 
+        font-size: 11px;
+        /* Touch-friendly padding */
+        padding: 10px 16px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .theme-toggle { 
+        /* 44px minimum touch target */
+        width: 44px; 
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .theme-toggle-icon { 
+        width: 18px; 
+        height: 18px; 
+      }
+      
+      /* ===== PROGRESS INDICATOR ===== */
+      .nav-progress {
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 20px;
+        top: auto;
+        flex-direction: row;
+        gap: 10px;
+        background: rgba(0,0,0,0.3);
+        padding: 6px 14px;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.1);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      
+      .light-mode .nav-progress {
+        background: rgba(255,255,255,0.5);
+        border: 1px solid rgba(0,0,0,0.1);
+      }
+      
+      .progress-line { 
+        width: 20px; 
+        height: 2px;
+        border-radius: 1px;
+      }
+      
+      .progress-line::after {
+        width: 100%;
+        height: 100%;
+        border-radius: 1px;
+      }
+      
+      .progress-dot {
+        width: 6px;
+        height: 6px;
+      }
+      
+      /* ===== HIDE DECORATIVE ELEMENTS ===== */
+      .hero-decoration,
+      .corner-decoration,
+      .bp-ruler,
+      .bp-data-card,
+      .bp-handnote,
+      .bp-cartouche,
+      .bp-compass,
+      .hero-side-panel,
+      .hero-info-grid,
+      .bp-reference-tags { 
+        display: none !important; 
+      }
+      
+      /* ===== HERO SECTION ===== */
+      .hero-data-stratification {
+        padding: 80px 24px 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100%;
+        overflow: hidden;
+      }
+      
+      .strat-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 100%;
+        overflow: hidden;
+      }
+      
+      .hero-chart-container {
+        max-width: 200px;
+        margin: 0 auto 24px;
+      }
+      
+      .hero-chart-img {
+        max-height: 120px;
+        object-fit: contain;
+      }
+      
+      .strat-title {
+        font-size: clamp(28px, 9vw, 42px);
+        line-height: 1.1;
+        margin-bottom: 16px;
+      }
+      
+      .strat-title .line1,
+      .strat-title .line2 {
+        display: block;
+      }
+      
+      .strat-title .line2 {
+        font-size: 0.55em;
+        margin-top: 4px;
+      }
+      
+      .hero-premium-desc {
+        font-size: 13px;
+        max-width: 100%;
+        padding: 0 8px;
+        line-height: 1.8;
+        color: var(--text-secondary);
+        margin-bottom: 32px;
+      }
+      
+      .premium-cta-group {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      
+      .premium-cta-group .hero-cta {
+        font-size: 14px;
+        /* Touch-friendly */
+        padding: 14px 28px;
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      
+      /* ===== FEATURES/ACCORDION SECTION ===== */
+      .features-panel {
+        padding: 70px 16px 80px;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .features-hero {
+        max-width: 100%;
+        margin-bottom: 16px;
+        text-align: center;
+      }
+      
+      .features-hero-title {
+        font-size: clamp(20px, 6vw, 26px);
+        margin-bottom: 8px;
+      }
+      
+      .features-hero-subtitle {
+        font-size: 11px;
+        line-height: 1.5;
+        padding: 0;
+      }
+      
+      .features-accordion-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 0;
+      }
+      
+      .accordion-center {
+        order: -1;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: center;
+      }
+      
+      .accordion-chart {
+        max-width: 140px;
+        width: 100%;
+      }
+      
+      .accordion-column {
+        gap: 6px;
+      }
+      
+      .accordion-card {
+        border-radius: 8px;
+      }
+      
+      .accordion-header {
+        padding: 10px 12px;
+        gap: 10px;
+        min-height: 44px;
+      }
+      
+      .accordion-icon-left {
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+      }
+      
+      .accordion-icon-left svg {
+        width: 14px;
+        height: 14px;
+      }
+      
+      .accordion-title {
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.2;
+      }
+      
+      .accordion-arrow {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+      
+      .accordion-content p {
+        font-size: 10px;
+        line-height: 1.5;
+        padding: 0 12px 10px 50px;
+        color: var(--text-secondary);
+      }
+      
+      /* ===== STATS SECTION ===== */
+      .stats-panel {
+        padding: 60px 24px 80px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+      
+      .stats-container { 
+        flex-direction: column; 
+        gap: 32px;
+        width: 100%;
+        max-width: 260px;
+      }
+      
+      .stat-item {
+        text-align: center;
+      }
+      
+      .stat-number {
+        font-size: clamp(36px, 10vw, 48px);
+        font-weight: 600;
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+      
+      .stat-label {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      
+      .floating-text {
+        font-size: 12vw;
+        opacity: 0.01;
+        white-space: nowrap;
+      }
+      
+      .floating-text.top {
+        top: 8%;
+      }
+      
+      .floating-text.bottom {
+        bottom: 12%;
+      }
+      
+      /* ===== CTA/LAST PAGE ===== */
+      .cta-panel {
+        padding: 60px 20px 120px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+      
+      .cta-content {
+        max-width: 100%;
+        padding: 0;
+        text-align: center;
+      }
+      
+      .cta-eyebrow {
+        font-size: 9px;
+        letter-spacing: 0.15em;
+        margin-bottom: 12px;
+      }
+      
+      .cta-title {
+        font-size: clamp(26px, 8vw, 36px);
+        line-height: 1.1;
+        margin-bottom: 14px;
+      }
+      
+      .cta-subtitle {
+        font-size: 12px;
+        line-height: 1.6;
+        max-width: 100%;
+        padding: 0;
+        margin-bottom: 20px;
+      }
+      
+      .cta-stats {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      
+      .cta-stat-value {
+        font-size: 11px;
+        font-weight: 500;
+      }
+      
+      .cta-stat-label {
+        font-size: 9px;
+      }
+      
+      .cta-btn {
+        font-size: 12px;
+        padding: 12px 20px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      
+      /* ===== MINI FOOTER ===== */
+      .mini-footer {
+        left: 16px;
+        right: 16px;
+        bottom: 60px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        row-gap: 4px;
+      }
+      
+      .mini-footer-brand {
+        font-size: 10px;
+      }
+      
+      .mini-footer-copy {
+        font-size: 9px;
+      }
+      
+      .mini-footer-link {
+        font-size: 10px;
+        padding: 6px 4px;
+        min-height: 36px;
+        display: flex;
+        align-items: center;
+      }
+      
+      .mini-footer-separator {
+        height: 10px;
+        opacity: 0.2;
+      }
+      
+      /* ===== BACK TO TOP ===== */
+      .back-to-top {
+        right: 16px;
+        bottom: 100px;
+        font-size: 10px;
+        padding: 10px;
+        min-width: 36px;
+        min-height: 36px;
+      }
+      
+      /* ===== GRADIENT OVERLAY ===== */
+      .gradient-overlay {
+        background: radial-gradient(
+          ellipse 180% 120% at 50% 50%,
+          transparent 0%,
+          transparent 15%,
+          rgba(10, 10, 15, 0.7) 45%,
+          rgba(10, 10, 15, 0.95) 70%
+        ) !important;
+      }
+      
+      .light-mode .gradient-overlay {
+        background: radial-gradient(
+          ellipse 180% 120% at 50% 50%,
+          transparent 0%,
+          transparent 15%,
+          rgba(255, 255, 255, 0.7) 45%,
+          rgba(255, 255, 255, 0.95) 70%
+        ) !important;
+      }
+      
+      /* ===== LOADING SCREEN ===== */
+      .loader-logo {
+        gap: 12px;
+      }
+      
+      .loader-logo svg {
+        width: 48px;
+        height: 46px;
+      }
+      
+      .loader-logo span {
+        font-size: 16px;
+      }
+      
+      .loader-bar {
+        width: 160px;
+      }
+      
+      /* ===== REDUCE MOTION FOR PERFORMANCE ===== */
+      .magnetic {
+        /* Disable magnetic effect on mobile */
+        transform: none !important;
+      }
+      
+      /* Optimize animations */
+      .hero-chart-img,
+      .accordion-chart {
+        animation: none;
+      }
+    }
+    
+    /* ===== EXTRA SMALL SCREENS (iPhone SE, etc.) ===== */
+    @media (max-width: 380px) {
+      .nav { 
+        padding: 12px 16px;
+        padding-top: calc(12px + env(safe-area-inset-top));
+      }
+      
+      .logo svg { 
+        width: 28px; 
+        height: 26px; 
+      }
+      
+      .nav-cta {
+        font-size: 10px;
+        padding: 8px 12px;
+      }
+      
+      .hero-data-stratification {
+        padding: 90px 16px 100px;
+      }
+      
+      .strat-title {
+        font-size: clamp(28px, 9vw, 36px);
+      }
+      
+      .hero-premium-desc {
+        font-size: 13px;
+      }
+      
+      .hero-chart-container {
+        max-width: 240px;
+      }
+      
+      .features-panel {
+        padding: 60px 16px 100px;
+      }
+      
+      .features-hero-title {
+        font-size: clamp(22px, 6vw, 28px);
+      }
+      
+      .accordion-chart {
+        max-width: 180px;
+      }
+      
+      .accordion-header {
+        padding: 14px 12px;
+      }
+      
+      .accordion-content p {
+        padding: 0 12px 14px 54px;
+        font-size: 12px;
+      }
+      
+      .stat-number {
+        font-size: clamp(36px, 11vw, 48px);
+      }
+      
+      .cta-title {
+        font-size: clamp(28px, 9vw, 36px);
+      }
+      
+      .cta-subtitle {
+        font-size: 13px;
+      }
+      
+      .mini-footer {
+        gap: 12px;
+        row-gap: 6px;
+      }
+      
+      .mini-footer-separator {
+        display: none;
+      }
+      
+      .nav-progress {
+        padding: 6px 12px;
+        gap: 10px;
+      }
+      
+      .progress-line {
+        width: 20px;
+      }
+    }
+    
+    /* ===== LANDSCAPE MOBILE ===== */
+    @media (max-width: 896px) and (orientation: landscape) {
+      .hero-data-stratification {
+        padding: 80px 40px;
+        min-height: auto;
+      }
+      
+      .hero-chart-container {
+        max-width: 200px;
+        margin-bottom: 20px;
+      }
+      
+      .strat-title {
+        font-size: clamp(24px, 5vh, 36px);
+      }
+      
+      .hero-premium-desc {
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+      
+      .features-panel {
+        padding: 60px 40px;
+      }
+      
+      .stats-panel {
+        padding: 60px 40px;
+      }
+      
+      .stats-container {
+        flex-direction: row;
+        gap: 32px;
+        max-width: 100%;
+      }
+      
+      .stat-number {
+        font-size: clamp(28px, 8vh, 42px);
+      }
+      
+      .cta-panel {
+        padding: 60px 40px 100px;
+      }
+      
+      .cta-title {
+        font-size: clamp(24px, 5vh, 36px);
+      }
+      
+      .nav-progress {
+        bottom: 12px;
+      }
+      
+      .mini-footer {
+        bottom: 60px;
+      }
+      
+      .back-to-top {
+        bottom: 100px;
+      }
+    }
+    
+    /* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+    @media (hover: none) and (pointer: coarse) {
+      /* Remove hover effects that don't work on touch */
+      .accordion-card:hover {
+        background: transparent;
+      }
+      
+      .nav-cta:hover::after {
+        width: 0;
+      }
+      
+      .mini-footer-link:hover::after {
+        width: 0;
+      }
+      
+      /* Add active states instead */
+      .accordion-card:active {
+        background: var(--bg-card);
+        transform: scale(0.99);
+      }
+      
+      .nav-cta:active,
+      .hero-cta:active,
+      .cta-btn:active {
+        opacity: 0.7;
+      }
+      
+      .mini-footer-link:active {
+        opacity: 0.7;
+      }
+      
+      /* Improve tap highlighting */
+      a, button {
+        -webkit-tap-highlight-color: rgba(74, 158, 255, 0.1);
+      }
+    }
+    
+    /* ===== PREFERS REDUCED MOTION ===== */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      
+      .loader {
+        animation: none;
+      }
+      
+      .panel {
+        transition: none;
+      }
     }
   </style>
   
@@ -3281,6 +4059,14 @@
     <div class="progress-step">
       <div class="progress-dot" data-panel="3"></div>
     </div>
+  </div>
+  
+  <!-- Mobile Swipe Hint -->
+  <div class="swipe-hint" id="swipeHint">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+    <span>Swipe to explore</span>
   </div>
 
   <!-- Horizontal Scroll Container -->
@@ -3660,8 +4446,13 @@
     let targetY = 0;
 
     const backToTop = document.getElementById('backToTop');
+    const swipeHint = document.getElementById('swipeHint');
 
     function scrollToPanel(index) {
+      // Hide swipe hint after first scroll
+      if (swipeHint && !swipeHint.classList.contains('hidden')) {
+        swipeHint.classList.add('hidden');
+      }
       // Clamp index to valid range
       if (index < 0) index = 0;
       if (index >= panels.length) index = panels.length - 1;
@@ -3756,22 +4547,65 @@
         }
     }, { passive: false, capture: true });
 
-    // Touch support
+    // Enhanced Touch support for mobile - Full screen swipe navigation
     let touchStartY = 0;
-    window.addEventListener('touchstart', (e) => {
+    let touchStartX = 0;
+    let touchStartTime = 0;
+    let isTouching = false;
+    const SWIPE_THRESHOLD = 30; // Minimum distance to trigger
+    
+    // Detect if user is on a touch device
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    
+    document.addEventListener('touchstart', (e) => {
       touchStartY = e.touches[0].clientY;
-    });
+      touchStartX = e.touches[0].clientX;
+      touchStartTime = Date.now();
+      isTouching = true;
+    }, { passive: false });
+    
+    // Prevent default scroll during touch move
+    document.addEventListener('touchmove', (e) => {
+      if (isTouching) {
+        // Prevent native scrolling - we handle navigation ourselves
+        e.preventDefault();
+      }
+    }, { passive: false });
 
-    window.addEventListener('touchend', (e) => {
+    document.addEventListener('touchend', (e) => {
+      if (!isTouching) return;
+      isTouching = false;
+      
       if (!canScroll) return;
-      const diff = touchStartY - e.changedTouches[0].clientY;
-      if (Math.abs(diff) > 50) {
+      
+      const touchEndY = e.changedTouches[0].clientY;
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndTime = Date.now();
+      
+      const diffY = touchStartY - touchEndY;
+      const diffX = touchStartX - touchEndX;
+      const timeDiff = Math.max(touchEndTime - touchStartTime, 1);
+      const velocityY = Math.abs(diffY) / timeDiff;
+      
+      // Calculate if this is a valid swipe
+      const isVerticalSwipe = Math.abs(diffY) > Math.abs(diffX);
+      const hasMinDistance = Math.abs(diffY) > SWIPE_THRESHOLD;
+      const isFastSwipe = velocityY > 0.2 && Math.abs(diffY) > 15;
+      
+      if (isVerticalSwipe && (hasMinDistance || isFastSwipe)) {
         canScroll = false;
-        if (diff > 0) scrollToPanel(currentPanel + 1);
-        else scrollToPanel(currentPanel - 1);
+        
+        if (diffY > 0) {
+          // Swiped UP = go to next panel
+          scrollToPanel(currentPanel + 1);
+        } else {
+          // Swiped DOWN = go to previous panel
+          scrollToPanel(currentPanel - 1);
+        }
+        
         setTimeout(() => { canScroll = true; }, 700);
       }
-    });
+    }, { passive: false });
 
     progressDots.forEach((dot, i) => {
       dot.addEventListener('click', () => {
