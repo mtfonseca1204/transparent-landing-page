@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transparent.space - Multi-Layer Liquidity Intelligence for DeFi</title>
-  
+  <title>Transparent.space - Liquidity Performance Intelligence for DeFi</title>
+
   <!-- SEO Meta Tags -->
-  <meta name="description" content="The world's first stratified quantitative engine. Deconstruct market opacity through independent layers of neural data aggregation and risk analysis for DeFi liquidity providers.">
-  <meta name="keywords" content="DeFi, liquidity, analytics, cryptocurrency, blockchain, liquidity provider, LP, yield farming, impermanent loss, multi-chain">
+  <meta name="description" content="Real-time pool monitoring that tells you what's working, what's broken, and why. Pegging health, depth quality, and incentive performance—so your users always trade at the best price.">
+  <meta name="keywords" content="DeFi, liquidity, pool monitoring, pool pegging, price depth, incentives, SLA, market makers, real-time alerts, multi-chain, execution quality">
   <meta name="author" content="Transparent.space">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://transparent.space">
@@ -15,15 +15,15 @@
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://transparent.space">
-  <meta property="og:title" content="Transparent.space - Multi-Layer Liquidity Intelligence">
-  <meta property="og:description" content="The world's first stratified quantitative engine for DeFi liquidity analytics. Real-time data, risk analysis, and multi-chain support.">
+  <meta property="og:title" content="Transparent.space - Liquidity Performance Intelligence">
+  <meta property="og:description" content="Real-time pool monitoring that tells you what's working, what's broken, and why. So your users always trade at the best price.">
   <meta property="og:image" content="https://transparent.space/og-image.png">
   <meta property="og:site_name" content="Transparent.space">
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Transparent.space - Multi-Layer Liquidity Intelligence">
-  <meta name="twitter:description" content="The world's first stratified quantitative engine for DeFi liquidity analytics.">
+  <meta name="twitter:title" content="Transparent.space - Liquidity Performance Intelligence">
+  <meta name="twitter:description" content="Real-time pool monitoring that tells you what's working, what's broken, and why. So your users always trade at the best price.">
   <meta name="twitter:image" content="https://transparent.space/og-image.png">
   
   <!-- Theme Color -->
@@ -639,25 +639,21 @@
 
     .nav-progress {
       position: fixed;
-      bottom: 40px;
+      bottom: 72px;
       left: 50%;
       transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 0;
+      display: grid;
+      grid-template-columns: 12px 12px 12px;
+      grid-template-rows: 12px 12px 12px;
       z-index: 100;
       transition: opacity 0.3s ease;
     }
 
-    .progress-step {
-      display: flex;
-      align-items: center;
-    }
-
     .progress-dot {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       border: 2px solid var(--border-color);
+      border-radius: 0;
       background: transparent;
       cursor: pointer;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -668,6 +664,7 @@
       content: '';
       position: absolute;
       inset: 2px;
+      border-radius: 0;
       background: var(--bp-blue);
       transform: scale(0);
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -695,27 +692,72 @@
       border-color: var(--bp-blue);
     }
 
+    /* Grid positions for dots: clockwise 0→1→2→3 */
+    .progress-dot[data-panel="0"] { grid-column: 1; grid-row: 1; }
+    .progress-dot[data-panel="1"] { grid-column: 3; grid-row: 1; }
+    .progress-dot[data-panel="2"] { grid-column: 3; grid-row: 3; }
+    .progress-dot[data-panel="3"] { grid-column: 1; grid-row: 3; }
+
     .progress-line {
-      width: 30px;
-      height: 2px;
-      background: var(--border-color);
       position: relative;
       overflow: hidden;
+      background: var(--border-color);
     }
 
     .progress-line::after {
       content: '';
       position: absolute;
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: 0;
       background: var(--bp-blue);
-      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .progress-line.filled::after {
+    /* Top line: 0 → 1 (left to right) */
+    .progress-line[data-line="0"] {
+      grid-column: 2; grid-row: 1;
+      height: 2px;
+      align-self: center;
+    }
+    .progress-line[data-line="0"]::after {
+      left: 0; top: 0; height: 100%; width: 0;
+    }
+    .progress-line[data-line="0"].filled::after {
       width: 100%;
+    }
+
+    /* Right line: 1 → 2 (top to bottom) */
+    .progress-line[data-line="1"] {
+      grid-column: 3; grid-row: 2;
+      width: 2px;
+      justify-self: center;
+    }
+    .progress-line[data-line="1"]::after {
+      left: 0; top: 0; width: 100%; height: 0;
+    }
+    .progress-line[data-line="1"].filled::after {
+      height: 100%;
+    }
+
+    /* Bottom line: 2 → 3 (right to left) */
+    .progress-line[data-line="2"] {
+      grid-column: 2; grid-row: 3;
+      height: 2px;
+      align-self: center;
+    }
+    .progress-line[data-line="2"]::after {
+      right: 0; top: 0; height: 100%; width: 0;
+    }
+    .progress-line[data-line="2"].filled::after {
+      width: 100%;
+    }
+
+    /* Left line: structural (completes the square) */
+    .progress-line[data-line="3"] {
+      grid-column: 1; grid-row: 2;
+      width: 2px;
+      justify-self: center;
+    }
+    .progress-line[data-line="3"]::after {
+      display: none;
     }
 
     /* Mobile Swipe Hint */
@@ -1223,7 +1265,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 120px 40px;
+      padding: 80px 40px 120px;
       text-align: center;
     }
 
@@ -1371,8 +1413,8 @@
     /* Hero Chart SVG */
     .hero-chart-container {
       width: 100%;
-      max-width: 500px;
-      margin: 0 auto -40px auto;
+      max-width: 480px;
+      margin: 0 auto 32px auto;
       opacity: 0;
       animation: heroChartReveal 1s ease-out 0.5s forwards;
       text-align: center;
@@ -1382,7 +1424,7 @@
       width: 100%;
       height: auto;
       filter: brightness(0) saturate(100%) invert(52%) sepia(98%) saturate(1217%) hue-rotate(194deg) brightness(102%) contrast(101%);
-      opacity: 0.85;
+      opacity: 0.9;
       transition: all 0.4s ease;
     }
 
@@ -1405,30 +1447,30 @@
         opacity: 1;
         transform: translateY(0);
       }
-
     }
 
     .strat-title {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: clamp(42px, 5.5vw, 80px);
+      font-size: clamp(36px, 5.5vw, 72px);
       font-weight: 400;
       line-height: 1.1;
       letter-spacing: -0.02em;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       text-align: center;
+      white-space: nowrap;
     }
 
     .strat-title .line1 {
-      display: block;
+      display: inline;
       color: var(--text-primary);
       font-weight: 300;
     }
 
     .strat-title .line2 {
-      display: block;
+      display: inline;
       color: var(--bp-blue);
-      font-size: 0.65em;
-      margin-top: 4px;
+      font-size: 1em;
+      margin-left: 0;
       font-weight: 400;
     }
     
@@ -1439,7 +1481,7 @@
       line-height: 1.8;
       color: var(--text-secondary);
       max-width: 520px;
-      margin: 0 auto 40px auto;
+      margin: 0 auto 32px auto;
       text-align: center;
     }
 
@@ -1448,7 +1490,13 @@
       display: flex;
       justify-content: center;
       gap: 20px;
-      margin-top: 40px;
+      position: fixed;
+      bottom: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      margin-top: 0;
+      transition: opacity 0.4s ease;
     }
 
     .premium-cta-group .hero-cta {
@@ -2884,10 +2932,11 @@
       margin-bottom: 24px;
       position: relative;
       letter-spacing: -0.02em;
+      white-space: normal;
     }
 
     .cta-title-main {
-      display: inline;
+      display: block;
       color: var(--text-primary);
       opacity: 0;
       transform: translateY(20px);
@@ -2895,9 +2944,10 @@
     }
 
     .cta-title-accent {
-      display: inline;
+      display: block;
       color: var(--bp-blue);
       position: relative;
+      margin-top: 0.05em;
       opacity: 0;
       transform: translateY(20px);
       animation: ctaReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
@@ -3343,40 +3393,31 @@
       .nav-progress {
         left: 50%;
         transform: translateX(-50%);
-        bottom: 20px;
+        bottom: 48px;
         top: auto;
-        flex-direction: row;
-        gap: 10px;
-        background: rgba(0,0,0,0.3);
-        padding: 6px 14px;
-        border-radius: 16px;
-        border: 1px solid rgba(255,255,255,0.1);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        grid-template-columns: 9px 9px 9px;
+        grid-template-rows: 9px 9px 9px;
+        background: none;
+        padding: 0;
+        border: none;
       }
-      
+
       .light-mode .nav-progress {
-        background: rgba(255,255,255,0.5);
-        border: 1px solid rgba(0,0,0,0.1);
+        background: none;
+        border: none;
       }
-      
-      .progress-line { 
-        width: 20px; 
-        height: 2px;
-        border-radius: 1px;
-      }
-      
-      .progress-line::after {
-        width: 100%;
-        height: 100%;
-        border-radius: 1px;
-      }
-      
+
       .progress-dot {
-        width: 6px;
-        height: 6px;
+        width: 9px;
+        height: 9px;
+        border-width: 1.5px;
+        border-radius: 0;
       }
-      
+
+      .progress-dot::before {
+        inset: 1px;
+      }
+
       /* ===== HIDE DECORATIVE ELEMENTS ===== */
       .hero-decoration,
       .corner-decoration,
@@ -3422,19 +3463,19 @@
       }
       
       .strat-title {
-        font-size: clamp(28px, 9vw, 42px);
+        font-size: clamp(24px, 8vw, 38px);
         line-height: 1.1;
         margin-bottom: 16px;
       }
       
       .strat-title .line1,
       .strat-title .line2 {
-        display: block;
+        display: inline;
       }
       
       .strat-title .line2 {
-        font-size: 0.55em;
-        margin-top: 4px;
+        font-size: 1em;
+        margin-left: 0;
       }
       
       .hero-premium-desc {
@@ -3625,6 +3666,7 @@
         font-size: clamp(26px, 8vw, 36px);
         line-height: 1.1;
         margin-bottom: 14px;
+        white-space: normal;
       }
       
       .cta-subtitle {
@@ -3776,7 +3818,7 @@
       }
       
       .strat-title {
-        font-size: clamp(28px, 9vw, 36px);
+        font-size: clamp(20px, 7vw, 30px);
       }
       
       .hero-premium-desc {
@@ -3830,12 +3872,9 @@
       }
       
       .nav-progress {
-        padding: 6px 12px;
-        gap: 10px;
-      }
-      
-      .progress-line {
-        width: 20px;
+        padding: 0;
+        grid-template-columns: 8px 8px 8px;
+        grid-template-rows: 8px 8px 8px;
       }
     }
     
@@ -3887,7 +3926,7 @@
       }
       
       .nav-progress {
-        bottom: 12px;
+        bottom: 40px;
       }
       
       .mini-footer {
@@ -4042,23 +4081,28 @@
     </div>
   </nav>
 
+  <!-- Fixed CTA -->
+  <div class="premium-cta-group">
+    <a href="#" class="hero-cta magnetic" id="exploreCta"
+       onmouseenter="window._shuffleStart && window._shuffleStart()"
+       onmouseleave="window._shuffleStop && window._shuffleStop()">
+      <span id="exploreText">Explore Platform</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+
   <!-- Progress Steps with Connecting Lines -->
   <div class="nav-progress" id="navProgress">
-    <div class="progress-step">
-      <div class="progress-dot active" data-panel="0"></div>
-      <div class="progress-line" data-line="0"></div>
-    </div>
-    <div class="progress-step">
-      <div class="progress-dot" data-panel="1"></div>
-      <div class="progress-line" data-line="1"></div>
-    </div>
-    <div class="progress-step">
-      <div class="progress-dot" data-panel="2"></div>
-      <div class="progress-line" data-line="2"></div>
-    </div>
-    <div class="progress-step">
-      <div class="progress-dot" data-panel="3"></div>
-    </div>
+    <div class="progress-dot active" data-panel="0"></div>
+    <div class="progress-dot" data-panel="1"></div>
+    <div class="progress-dot" data-panel="2"></div>
+    <div class="progress-dot" data-panel="3"></div>
+    <div class="progress-line" data-line="0"></div>
+    <div class="progress-line" data-line="1"></div>
+    <div class="progress-line" data-line="2"></div>
+    <div class="progress-line" data-line="3"></div>
   </div>
   
   <!-- Mobile Swipe Hint -->
@@ -4102,23 +4146,16 @@
         <div class="strat-content">
           <!-- Hero Chart SVG -->
           <div class="hero-chart-container">
-            <img src="public/chart23.svg" alt="Analytics Chart" class="hero-chart-img" />
+            <img src="public/chart_blue.svg" alt="Analytics Chart" class="hero-chart-img" />
           </div>
           <h1 class="strat-title">
-            <span class="line1">Optimize</span>
-            <span class="line2">Incentives</span>
+            <span class="line1">Markets</span>
+            <span class="line2">Made Visible</span>
           </h1>
           <p class="hero-premium-desc">
-            Understand which incentives actually move liquidity and which get extracted. Track LP behavior, concentration risk, and churn across your pools. Deploy capital where it improves depth and execution—not where it disappears.
+            We provide real-time visibility into price-peg health, liquidity depth, and execution quality across target pools. We alert you when pools depeg or incentives drift, diagnose the underlying bottlenecks, and translate those signals into actionable insights for SLAs and incentive design.
           </p>
-          <div class="premium-cta-group">
-            <a href="#" class="hero-cta magnetic">
-              <span>Explore Platform</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-        </div>
+          <div class="premium-cta-group-placeholder"></div>
 
       </div>
 
@@ -4129,8 +4166,8 @@
     <section class="panel features-panel">
       <!-- Hero Title for Features Section -->
       <div class="features-hero">
-        <h2 class="features-hero-title">Core <span>Capabilities</span></h2>
-        <p class="features-hero-subtitle">Decision-grade signals for protocols, foundations, market makers, and treasury teams managing liquidity programs.</p>
+        <h2 class="features-hero-title">Under The <span>Surface</span></h2>
+          <p class="features-hero-subtitle">Pools are more than LP positions. We surface the signals that actually determine whether your users get good prices, and what to do when they don't.</p>
       </div>
       
       <div class="features-accordion-container">
@@ -4143,7 +4180,7 @@
                   <path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-3 3"/>
                 </svg>
               </div>
-              <h3 class="accordion-title">Liquidity Intelligence</h3>
+              <h3 class="accordion-title">Real-Time Alerts</h3>
               <div class="accordion-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M6 9l6 6 6-6"/>
@@ -4151,7 +4188,7 @@
               </div>
             </div>
             <div class="accordion-content">
-              <p>Real-time liquidity distribution by price. Depth, density, and capital efficiency across ranges. Historical liquidity shifts, concentration changes, and price impact modeling for configurable trade sizes.</p>
+              <p>Instant notifications when pools depeg, depth deteriorates, or execution quality drops. Surface problems the moment they start—not after your users have already felt them.</p>
             </div>
           </div>
 
@@ -4162,7 +4199,7 @@
                   <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
                 </svg>
               </div>
-              <h3 class="accordion-title">Market Maker & LP Monitoring</h3>
+              <h3 class="accordion-title">Pegging & Price Quality</h3>
               <div class="accordion-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M6 9l6 6 6-6"/>
@@ -4170,7 +4207,7 @@
               </div>
             </div>
             <div class="accordion-content">
-              <p>Track individual LP positions, ranges, and TVL. Identify dominant LPs and concentration risk. Monitor adds, removals, and net positioning over time. Compare active vs passive liquidity behavior.</p>
+              <p>Continuous monitoring of pegging health and price accuracy across pools. When a pool is performing well, trace exactly what's driving it—so you can replicate the conditions elsewhere.</p>
             </div>
           </div>
 
@@ -4181,7 +4218,7 @@
                   <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
                 </svg>
               </div>
-              <h3 class="accordion-title">Incentives & ROI Analysis</h3>
+              <h3 class="accordion-title">Structural Diagnostics</h3>
               <div class="accordion-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M6 9l6 6 6-6"/>
@@ -4189,7 +4226,7 @@
               </div>
             </div>
             <div class="accordion-content">
-              <p>Measure incentive spend vs actual liquidity delivered. Identify LPs extracting rewards without supporting depth. Detect liquidity mercenaries vs long-term contributors. Quantify capital efficiency per incentive dollar.</p>
+              <p>Not every pool has the same rebalancing dynamics. Map the underlying constraints—withdrawal paths, bridge availability, arbitrage accessibility—that shape pegging efficiency per asset.</p>
             </div>
           </div>
         </div>
@@ -4208,7 +4245,7 @@
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 </svg>
               </div>
-              <h3 class="accordion-title">Risk & Execution Insights</h3>
+              <h3 class="accordion-title">Incentive Effectiveness</h3>
               <div class="accordion-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M6 9l6 6 6-6"/>
@@ -4216,7 +4253,7 @@
               </div>
             </div>
             <div class="accordion-content">
-              <p>Price impact curves for buy and sell pressure. Slippage history and execution quality tracking. Arbitrage pressure vs oracle deviation. Real-time alerts when liquidity moves out of range.</p>
+              <p>See whether incentive spend is translating into better markets or just getting absorbed. Connect SLA performance to actual pricing outcomes—so every dollar deployed improves the experience your users feel.</p>
             </div>
           </div>
 
@@ -4227,7 +4264,7 @@
                   <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
                 </svg>
               </div>
-              <h3 class="accordion-title">Operational Control</h3>
+              <h3 class="accordion-title">Beyond The MM</h3>
               <div class="accordion-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M6 9l6 6 6-6"/>
@@ -4235,7 +4272,7 @@
               </div>
             </div>
             <div class="accordion-content">
-              <p>LP-level deep dives covering positions, activity, and fee capture. Price range monitoring with health status. Liquidity targets vs actual deployment. Historical performance across market conditions.</p>
+              <p>Healthy pools aren't always about the primary LP. Organic arbitrage, ecosystem activity, and asset accessibility all play a role. See the full picture of what's actually keeping your markets tight.</p>
             </div>
           </div>
 
@@ -4246,7 +4283,7 @@
                   <path d="M4 17h16M4 12h16M4 7h16"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="12" r="1"/><circle cx="12" cy="7" r="1"/>
                 </svg>
               </div>
-              <h3 class="accordion-title">Built For Teams</h3>
+              <h3 class="accordion-title">Operational Clarity</h3>
               <div class="accordion-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M6 9l6 6 6-6"/>
@@ -4254,7 +4291,7 @@
               </div>
             </div>
             <div class="accordion-content">
-              <p>Designed for protocols managing incentives, foundations overseeing liquidity programs, market makers, professional LPs, and treasury & ops teams who need institutional-grade visibility.</p>
+              <p>Move from gut feel to evidence. SLA reviews, incentive reallocation, and market maker conversations grounded in data—focused on outcomes, not finger-pointing.</p>
             </div>
           </div>
         </div>
@@ -4263,15 +4300,15 @@
 
     <!-- Panel 3: Stats -->
     <section class="panel stats-panel">
-      <div class="floating-text top">LIQUIDITY INTELLIGENCE LIQUIDITY INTELLIGENCE </div>
-      <div class="floating-text bottom">STOP FLYING BLIND STOP FLYING BLIND </div>
+      <div class="floating-text top">LIQUIDITY PERFORMANCE LIQUIDITY PERFORMANCE </div>
+      <div class="floating-text bottom">TRACK WHAT MOVES PRICES TRACK WHAT MOVES PRICES </div>
       <div class="stats-container">
         <div class="stat-item">
-          <div class="stat-number" data-value="$2B+">$2B+</div>
+          <div class="stat-number" data-value="$20M+">$20M+</div>
           <div class="stat-label">TVL Monitored</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" data-value="100+">100+</div>
+          <div class="stat-number" data-value="20+">20+</div>
           <div class="stat-label">Pools Tracked</div>
         </div>
         <div class="stat-item">
@@ -4284,11 +4321,11 @@
     <!-- Panel 4: CTA -->
     <section class="panel cta-panel">
       <div class="cta-content">
-        <div class="cta-eyebrow">Why It Matters</div>
+        <div class="cta-eyebrow">What It's Really About</div>
         <h2 class="cta-title">
-          <span class="cta-title-main">Stop Flying </span><span class="cta-title-accent">Blind</span>
+          <span class="cta-title-main">Transparent Markets, </span><span class="cta-title-accent">Better Prices</span>
         </h2>
-        <p class="cta-subtitle">Replace dashboards with decision-grade signals. Allocate incentives where they actually improve markets. Maintain healthy depth without overpaying for liquidity.</p>
+        <p class="cta-subtitle">Optimizing incentives matters, but outcomes matter more. Sustain peg stability, reliable depth, and consistent execution quality for end users with the visibility to deliver it.</p>
         
         <div class="cta-buttons">
           <a href="#" class="cta-btn magnetic">
@@ -4302,15 +4339,15 @@
         <div class="cta-stats">
           <div class="cta-stat">
             <div class="cta-stat-value">Protocols</div>
-            <div class="cta-stat-label">Managing Incentives</div>
+            <div class="cta-stat-label">Protecting Execution Quality</div>
           </div>
           <div class="cta-stat">
             <div class="cta-stat-value">Foundations</div>
-            <div class="cta-stat-label">Overseeing Programs</div>
+            <div class="cta-stat-label">Overseeing Pool Health</div>
           </div>
           <div class="cta-stat">
-            <div class="cta-stat-value">MMs & LPs</div>
-            <div class="cta-stat-label">Professional Grade</div>
+            <div class="cta-stat-value">Teams</div>
+            <div class="cta-stat-label">Making Informed Decisions</div>
           </div>
         </div>
       </div>
@@ -4499,6 +4536,18 @@
           backToTop.classList.add('visible');
         } else {
           backToTop.classList.remove('visible');
+      }
+
+      // Explore Platform CTA - only visible on hero (panel 0)
+      const exploreCta = document.querySelector('.premium-cta-group');
+      if (exploreCta) {
+        if (index === 0) {
+          exploreCta.style.opacity = '1';
+          exploreCta.style.pointerEvents = 'auto';
+        } else {
+          exploreCta.style.opacity = '0';
+          exploreCta.style.pointerEvents = 'none';
+        }
       }
 
       // Features title animation on panel 1 (Features)
@@ -4939,6 +4988,48 @@
         element.classList.add('active');
       }
     }
+
+    // Cryptographic shuffle effect on Explore Platform CTA
+    (function() {
+      var textEl = document.getElementById('exploreText');
+      if (!textEl) return;
+
+      var original = 'Explore Platform';
+      var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+      var timer = null;
+
+      window._shuffleStart = function() {
+        var frame = 0;
+        if (timer) clearInterval(timer);
+
+        timer = setInterval(function() {
+          frame++;
+          var resolved = Math.max(0, Math.floor((frame - 15) / 2));
+          var result = '';
+          for (var i = 0; i < original.length; i++) {
+            if (original[i] === ' ') {
+              result += ' ';
+            } else if (i < resolved) {
+              result += original[i];
+            } else {
+              result += chars[Math.floor(Math.random() * chars.length)];
+            }
+          }
+          textEl.innerText = result;
+
+          if (resolved >= original.length) {
+            clearInterval(timer);
+            timer = null;
+            textEl.innerText = original;
+          }
+        }, 35);
+      };
+
+      window._shuffleStop = function() {
+        if (timer) { clearInterval(timer); timer = null; }
+        textEl.innerText = original;
+      };
+    })();
 
   </script>
 </body>
